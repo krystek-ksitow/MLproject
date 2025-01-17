@@ -61,7 +61,6 @@ for cluster in dta_sort['Clusternumber'].unique():
         cluster_dta['Standard_Alcoholunits_Last_28days'], 
         [cluster] * len(cluster_dta),
         color=colors[cluster], 
-        
     )
 
 plt.show()
