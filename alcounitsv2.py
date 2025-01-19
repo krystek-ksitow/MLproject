@@ -9,6 +9,18 @@ url1 = 'https://raw.githubusercontent.com/krystek-ksitow/MLproject/refs/heads/ma
 cl_t_imp = ['Standard_Alcoholunits_Last_28days']
 dta = pd.read_csv(url1, usecols=cl_t_imp)
 
+#Ok what we did here we are making 2 instances of the csv which we will concat at the end because we need the subject numbers but we cant read them because they are not an int so... we are doing it that way
+
+#dta_worse_dontlook = pd.read_csv(url1)
+#dta_worse_colnames = dta_worse_dontlook.columns
+#print(dta_worse_colnames)
+cl_t_imp_worse = ['Unnamed: 0','Standard_Alcoholunits_Last_28days']
+dta_worse_dontlook = pd.read_csv(url1, usecols= cl_t_imp_worse)
+dta_worse_dontlook['Standard_Alcoholunits_Last_28days'] = pd.to_numeric(dta['Standard_Alcoholunits_Last_28days'], errors='coerce')
+dta_worse_clean = dta_worse_dontlook.dropna(subset=['Standard_Alcoholunits_Last_28days'])
+dta_worse_clean_sort = dta_worse_clean.sort_values(by='Standard_Alcoholunits_Last_28days', ascending=True)
+
+
 dta['Standard_Alcoholunits_Last_28days'] = pd.to_numeric(dta['Standard_Alcoholunits_Last_28days'], errors='coerce')
 dta_clean = dta.dropna(subset=['Standard_Alcoholunits_Last_28days'])
 dta_sort = dta_clean.sort_values(by='Standard_Alcoholunits_Last_28days', ascending=True)
@@ -27,15 +39,19 @@ nz_cons['Clusternumber'] = kmeans.fit_predict(nz_cons)
 z_cons = z_cons.copy() #copy again, same reason
 z_cons['Clusternumber'] = 10
 
-fin_dta = pd.concat([z_cons, nz_cons]).sort_index() #concatinate the 2 into 1
+good_dta = pd.concat([z_cons, nz_cons]) #concatinate the 2 into 1
 
 #Plot
 colors = ['red', 'blue', 'green', 'orange']
-for cluster in fin_dta['Clusternumber'].unique():
-    cluster_data = fin_dta[fin_dta['Clusternumber'] == cluster]
+for cluster in good_dta['Clusternumber'].unique():
+    cluster_data = good_dta[good_dta['Clusternumber'] == cluster]
     plt.scatter(
         cluster_data['Standard_Alcoholunits_Last_28days'], 
         [cluster] * len(cluster_data),
     )
 
 plt.show()
+
+fin_dta = pd.concat([good_dta, dta_worse_clean_sort])
+path = r'Censored'
+fin_dta.to_csv(path, index=False)
