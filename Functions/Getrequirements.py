@@ -28,3 +28,5 @@ def getrequirements(url):
     return imported_modules
 
 #getrequirements('https://raw.githubusercontent.com/krystek-ksitow/MLproject/refs/heads/DSWBranch/requirementsTEST.txt')
+
+#ok so funny thing... it does import all things, it just says unable to import X because libraries have names that dont match their import names. scikit-learn -> sklearn, pillow - PIL ect
