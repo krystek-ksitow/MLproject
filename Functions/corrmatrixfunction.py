@@ -7,7 +7,6 @@ def generate_corr_matrix(url, include_columns, output_file):
         dta = pd.read_csv(url)
         sel_dta = dta[include_columns]
         corr_matrix = sel_dta.corr()
-        plt.figure(figsize=(10, 8)) #Hmm... we gotta make it dynamic if we ever want bigger plots
         sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
         plt.title('Corr_Matrix')
         plt.savefig(output_file, format='png')
