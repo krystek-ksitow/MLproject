@@ -13,8 +13,8 @@ def gettrainingdata(csv_url, train_size=0.8):
 
     x_train = fturs[indces[:split_pint]]
     x_test = fturs[indces[split_pint:]]
-    y_train = fturs[indces[:split_pint]]
-    y_test = fturs[indces[split_pint:]]
+    y_train = labls[indces[:split_pint]]
+    y_test = labls[indces[split_pint:]]
 
     return x_train, x_test, y_train, y_test
 
