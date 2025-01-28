@@ -2,6 +2,7 @@ from sklearn.linear_model import LinearRegression
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
 def gettrainingdata(data, x_col, y_col, train_size=0.8):
     import pandas as pd
@@ -51,6 +52,15 @@ for cope_col, data in datasets.items():
         model = LinearRegression()
         model.fit(x_train, y_train)
         y_pred = model.predict(x_test)
+
+        r2 = r2_score(y_test, y_pred)
+        mse = mean_squared_error(y_test, y_pred)
+        mae = mean_absolute_error(y_test, y_pred)
+        print(f"Results for {cope_col}:")
+        print(f"  R^2: {r2:.3f}")
+        print(f"  Mean Squared Error: {mse:.3f}")
+        print(f"  Mean Absolute Error: {mae:.3f}")
+        print("-------------------------------")
         plt.scatter(x_test, y_test, label="Actual", color="red", alpha=0.7)
         plt.scatter(x_test, y_pred, label="Predicted", color="green", alpha=0.7)
         plt.xlabel("Alcohol Units Consumed (Last 28 Days)")
