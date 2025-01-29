@@ -8,19 +8,29 @@ url1 = 'https://raw.githubusercontent.com/krystek-ksitow/MLproject/refs/heads/DS
 cl_t_imp = ['Patient_ID','Standard_Alcoholunits_Last_28days']
 dta = pd.read_csv(url1, usecols = cl_t_imp)
 
-scaler = StandardScaler()
-dta_scal = scaler.fit_transform(dta)
-inertia = []
-k_range = range(1, 7)  
-for k in k_range:
-    kmeans = KMeans(n_clusters=k)
-    kmeans.fit(dta_scal)
-    inertia.append(kmeans.inertia_)
+def elbow(data, x, y):
+# Standardizing data
+    scaler = StandardScaler()
+    dta_scal = scaler.fit_transform(data)
+    
+    inertia = []
+    k_range = range(x, y)
+    
+    for k in k_range:
+        kmeans = KMeans(n_clusters=k, n_init=10, random_state=42)
+        kmeans.fit(dta_scal)
+        inertia.append(kmeans.inertia_)  # Fix: Use `inertia_`
+    
+    # Plot the Elbow Curve
+    plt.figure(figsize=(8, 5))
+    plt.plot(k_range, inertia, marker='o', linestyle='-')
+    plt.xlabel('Number of Clusters (k)')
+    plt.ylabel('Inertia')
+    plt.title('Elbow Method for Optimal k')
+    plt.grid(True)
+    plt.show()
 
-#plt.plot(k_range, inertia)
-#plt.show()
-
-#Elbow says 3 is the optimal number of clusters, we are adding a 4th one for people who drank 0 alcounits
+#Elbow says idk what
 
 z_cons = dta[dta['Standard_Alcoholunits_Last_28days'] == 0].copy()
 nz_cons = dta[dta['Standard_Alcoholunits_Last_28days'] > 0].copy()
