@@ -1,0 +1,20 @@
+getrequirements(url):
+
+This function downloads a requirements.txt file from the provided URL, reads it and installs the listed packages using pip. However user is required to manually install requests through ‘pip install requirements’
+
+Note: It will return ‘Unable to import’ error for libraries such as sklearn or pillow because their import name is not the same as their library name, they should still install just fine.
+
+
+def generate_corr_matrix(url, include_columns, output_file): 
+
+This function downloads a dataset from the given URL, selects specified columns, computes the correlation matrix, and visualizes it as a heatmap. The resulting plot is saved as an image file with the provided path output name.
+
+def gettrainingdata(csv_url, train_size=0.8): 
+
+This function downloads a dataset from the given URL, extracts features and labels, shuffles the data, and splits it into training and test sets based on the specified ratio.
+
+Returns:  A tuple containing four NumPy arrays: 
+- `x_train`: Training feature set. 
+- `x_test`: Test feature set. 
+- `y_train`: Training labels. 
+- `y_test`: Test labels.
