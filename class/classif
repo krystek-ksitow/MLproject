@@ -1,0 +1,32 @@
+https://raw.githubusercontent.com/krystek-ksitown/MLproject/refs/heads/krist/data/datacl.csv
+import pandas as pd
+from sklearn.cluster import KMeans
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
+datacl = pd.read_csv('https://raw.githubusercontent.com/krystek-ksitown/MLproject/refs/heads/krist/data/datacl.csv')
+
+datacl.shape
+
+features = datacl.drop(columns=["Patient_ID"])
+
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(features.iloc[:, 1:])
+
+kmeans = KMeans(n_clusters=3, random_state=42)  
+
+
+datacl['Cluster'] = kmeans.fit_predict(scaled_features)
+
+def predict_cluster(alco_group_value):
+    sample = np.zeros((1, scaled_features.shape[1]))
+    sample[:, 0] = alco_group_value 
+    sample_scaled = scaler.transform(sample)
+    return kmeans.predict(sample_scaled)[0]
+
+alco_group_example = 3
+
+predicted_cluster = predict_cluster(alco_group_example)
+
+print(f"Predicted Cluster for Alco Group {alco_group_example}: {predicted_cluster}")
